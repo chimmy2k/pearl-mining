@@ -1,0 +1,30 @@
+[Unit]
+Description=PearlHash miner (wildrig-multi)
+Documentation=https://github.com/andru-kun/wildrig-multi
+After=network-online.target pearl-tune.service
+Wants=network-online.target
+Requires=pearl-tune.service
+# Stop restart-looping on a permanently broken config (e.g. bad pool URL):
+# 5 starts in 5 minutes, then systemd gives up and leaves it failed so the
+# watchdog can alert instead of thrashing the GPU.
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+ExecStart=@INSTALL_DIR@/run.sh
+Restart=always
+RestartSec=10
+TimeoutStopSec=30
+# SIGINT makes the miner flush pending shares before exiting.
+KillSignal=SIGINT
+User=root
+# Slightly elevated priority so pool keepalives are not starved by other work.
+Nice=-5
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=pearl-mining
+
+[Install]
+WantedBy=multi-user.target

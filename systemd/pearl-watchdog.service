@@ -1,0 +1,13 @@
+[Unit]
+Description=PearlHash hashrate watchdog
+Documentation=https://github.com/andru-kun/wildrig-multi
+After=pearl-mining.service
+
+[Service]
+Type=oneshot
+EnvironmentFile=-@CONF_DIR@/watchdog.env
+ExecStart=@INSTALL_DIR@/watchdog.sh
+# Exit codes are meaningful, not errors: 0 healthy, 1 degraded, 2 restarted,
+# 3 unrecoverable (alerted). systemd must not mark the unit failed for these.
+SuccessExitStatus=0 1 2 3
+TimeoutStartSec=180

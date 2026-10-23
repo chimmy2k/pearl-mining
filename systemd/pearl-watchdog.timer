@@ -1,0 +1,12 @@
+[Unit]
+Description=Check PearlHash hashrate every 5 minutes
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=5min
+AccuracySec=30s
+# Catch up after suspend/reboot instead of waiting a full interval.
+Persistent=true
+
+[Install]
+WantedBy=timers.target

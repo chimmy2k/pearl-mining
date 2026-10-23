@@ -1,0 +1,16 @@
+[Unit]
+Description=Apply PearlHash GPU power/clock settings
+DefaultDependencies=no
+After=systemd-modules-load.service
+Before=pearl-mining.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=@INSTALL_DIR@/tune.sh
+# Non-fatal: if the driver is not ready yet the miner still starts at stock
+# clocks, and the watchdog will report the resulting hashrate drop.
+SuccessExitStatus=0 1
+
+[Install]
+WantedBy=multi-user.target

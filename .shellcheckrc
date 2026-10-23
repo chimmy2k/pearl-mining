@@ -1,0 +1,6 @@
+# Shellcheck configuration.
+# We target bash 3.2+ (macOS ships it) so avoid bash-4-only constructs.
+shell=bash
+severity=warning
+# SC1091: we source lib/common.sh via a computed path; shellcheck can't follow it.
+exclude=SC1091

@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: tests (ubuntu)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install shellcheck
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq shellcheck
+
+      - name: Shellcheck
+        run: shellcheck -S warning -f gcc ./*.sh ./bin/*.sh ./lib/*.sh
+
+      - name: Test suite
+        run: ./tests/run-tests.sh
+
+  test-macos:
+    name: tests (macos, bash 3.2)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Report bash version
+        run: bash --version | head -1
+
+      - name: Test suite
+        # macOS ships bash 3.2 — this job proves the scripts do not rely on
+        # bash 4 features (mapfile, associative arrays, ${arr[@]} on empty).
+        run: ./tests/run-tests.sh

@@ -1,0 +1,21 @@
+# Benchmark output
+bench-results*.tsv
+*.tsv
+
+# Test scratch
+*.log
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Editor / OS
+.DS_Store
+*.swp
+*~
+.idea/
+.vscode/
+
+# Local config — never commit real pool URLs or addresses
+*.env
+!tests/*.env
+secrets.env
